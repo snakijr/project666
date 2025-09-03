@@ -24,7 +24,6 @@ def test_filter_by_currency_absent_currency(sample_transactions):
     assert results == []
 
 
-
 def test_filter_by_currency_empty_list():
     """Функция должна корректно работать с пустым списком"""
     gen = filter_by_currency([], "USD")

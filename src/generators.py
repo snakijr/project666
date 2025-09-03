@@ -1,5 +1,3 @@
-
-
 def filter_by_currency(transactions: list, currency_code: str):
     """
     Генератор, который отдает транзакции с указанной валютой.
@@ -41,5 +39,5 @@ def card_number_generator(start: int, end: int):
         # Преобразуем число в строку длиной 16 символов с ведущими нулями
         card_str = f"{number:016d}"
         # Разбиваем на блоки по 4 цифры
-        formatted = " ".join(card_str[i:i+4] for i in range(0, 16, 4))
+        formatted = " ".join(card_str[i : i + 4] for i in range(0, 16, 4))
         yield formatted

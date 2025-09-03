@@ -1,5 +1,36 @@
 import pytest
 
+from generators import filter_by_currency
+
+
+@pytest.fixture
+def sample_transactions():
+    return [
+        {
+            "id": 1,
+            "operationAmount": {
+                "amount": "100",
+                "currency": {"name": "USD", "code": "USD"},
+            },
+            "description": "Перевод организации",
+        },
+        {
+            "id": 2,
+            "operationAmount": {
+                "amount": "200",
+                "currency": {"name": "EUR", "code": "EUR"},
+            },
+            "description": "Перевод в евро",
+        },
+        {
+            "id": 3,
+            "operationAmount": {
+                "amount": "300",
+                "currency": {"name": "RUB", "code": "RUB"},
+            },
+            "description": "Перевод в рублях",
+        },
+    ]
 
 @pytest.fixture
 def card_number() -> str:
@@ -16,3 +47,5 @@ def fixture_filter_by_state() -> list[dict]:
         {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
         {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
     ]
+
+

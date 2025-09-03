@@ -1,5 +1,13 @@
+
+
 def filter_by_currency(transactions: list, currency_code: str):
-    """Генератор, который отдает транзакции с указанной валютой."""
+    """
+    Генератор, который отдает транзакции с указанной валютой.
+
+    :param transactions: список словарей с транзакциями
+    :param currency_code: код валюты (например, "USD")
+    :yield: транзакции в нужной валюте
+    """
     for transaction in transactions:
         if (
             "operationAmount" in transaction
@@ -8,39 +16,30 @@ def filter_by_currency(transactions: list, currency_code: str):
         ):
             yield transaction
 
-usd_transactions = filter_by_currency(transactions, "USD")
-
-for _ in range(2):
-    print(next(usd_transactions))
-
-
 
 def transaction_descriptions(transactions: list):
-    """Генератор, который поочередно возвращает описания транзакций."""
+    """
+    Генератор, который возвращает описания транзакций.
+
+    :param transactions: список словарей с транзакциями
+    :yield: описание каждой операции
+    """
     for transaction in transactions:
         if "description" in transaction:
             yield transaction["description"]
 
 
-descriptions = transaction_descriptions(transactions)
-
-for _ in range(5):
-    print(next(descriptions))
-
-
-
 def card_number_generator(start: int, end: int):
-    """Генератор номеров карт в формате XXXX XXXX XXXX XXXX."""
+    """
+    Генератор номеров карт в формате XXXX XXXX XXXX XXXX.
+
+    :param start: начальное значение диапазона (int)
+    :param end: конечное значение диапазона (int)
+    :yield: номера карт от start до end включительно
+    """
     for number in range(start, end + 1):
-        # Преобразуем число в строку длиной 16 с ведущими нулями
+        # Преобразуем число в строку длиной 16 символов с ведущими нулями
         card_str = f"{number:016d}"
-        # Форматируем блоками по 4 цифры
+        # Разбиваем на блоки по 4 цифры
         formatted = " ".join(card_str[i:i+4] for i in range(0, 16, 4))
         yield formatted
-
-
-cards = card_number_generator(1, 5)
-
-for card in cards:
-    print(card)
-

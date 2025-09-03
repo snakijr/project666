@@ -1,7 +1,5 @@
 import pytest
 
-from generators import filter_by_currency
-
 
 @pytest.fixture
 def sample_transactions():

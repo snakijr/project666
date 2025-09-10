@@ -3,7 +3,8 @@
 ## Описание:
 
 Программа, которая маскирует номера счетов и карт, также фильтрует по дате совершенные платежи.  
-Добавлен модуль **generators.py** с генераторами для работы с транзакциями и номерами карт.
+Добавлен модуль **generators.py** с генераторами для работы с транзакциями и номерами карт.  
+Добавлен модуль **log_decorator.py** с универсальным декоратором логирования.
 
 ## Установка:
 
@@ -34,55 +35,54 @@ pip install poetry
 
 #### 1. filter_by_currency
 Фильтрует транзакции по заданной валюте.
-```python
-from src.generators import filter_by_currency
-
-transactions = [
-    {"id": 1, "operationAmount": {"amount": "100", "currency": {"code": "USD"}}, "description": "Перевод"},
-    {"id": 2, "operationAmount": {"amount": "200", "currency": {"code": "EUR"}}, "description": "Перевод"},
-]
-
-gen = filter_by_currency(transactions, "USD")
-print(next(gen))  
-# {"id": 1, "operationAmount": {"amount": "100", "currency": {"code": "USD"}}, "description": "Перевод"}
-```
 
 #### 2. transaction_descriptions
 Возвращает описание каждой транзакции по очереди.
-```python
-from src.generators import transaction_descriptions
-
-transactions = [
-    {"id": 1, "description": "Перевод организации"},
-    {"id": 2, "description": "Перевод со счета на счет"},
-]
-
-gen = transaction_descriptions(transactions)
-print(next(gen))  # "Перевод организации"
-print(next(gen))  # "Перевод со счета на счет"
-```
 
 #### 3. card_number_generator
-Генерирует номера карт в заданном диапазоне в формате `XXXX XXXX XXXX XXXX`.
-```python
-from src.generators import card_number_generator
-
-gen = card_number_generator(1, 3)
-print(list(gen))
-# ['0000 0000 0000 0001', '0000 0000 0000 0002', '0000 0000 0000 0003']
-```
+Генерирует номера карт в заданном диапазоне.
 
 #### 4. infinite_card_number_generator
-Бесконечно выдаёт номера карт в формате `XXXX XXXX XXXX XXXX`, начиная с указанного значения.
-```python
-from src.generators import infinite_card_number_generator
+Бесконечно выдаёт номера карт.
 
-gen = infinite_card_number_generator(9999999999999997)
-print(next(gen))  # '9999 9999 9999 9997'
-print(next(gen))  # '9999 9999 9999 9998'
-print(next(gen))  # '9999 9999 9999 9999'
-print(next(gen))  # '0000 0000 0000 0001' (цикл заново)
+### log_decorator.py
+Декоратор `@log` автоматически логирует начало и завершение функций, а также ошибки.
+
+```python
+from log_decorator import log
+
+@log()  # вывод в консоль
+def add(x, y):
+    return x + y
+
+@log(filename="mylog.txt")  # вывод в файл
+def div(x, y):
+    return x / y
 ```
+
+Примеры логов:
+- Успех:  
+  ```
+  add ok
+  ```
+- Ошибка:  
+  ```
+  div error: ZeroDivisionError. Inputs: (1, 0), {}
+  ```
+
+## Тесты
+
+Для запуска тестов используйте **pytest**:
+
+```bash
+pytest -v
+```
+
+Тесты находятся в папке `tests/` и проверяют:
+- успешное выполнение функции с логированием;
+- обработку ошибок;
+- запись в консоль (`capsys`);
+- запись в файл (`tmp_path`).
 
 ## Лицензия:
 

@@ -17,10 +17,13 @@ def load_json(filepath):
     """
     try:
         with open(filepath, "r", encoding="utf-8") as file:
-            data = json.load(file)
-            if not data:
+            # читаем содержимое файла
+            content = file.read().strip()
+            # если пусто — выбрасываем ValueError
+            if not content:
                 raise ValueError("Файл пустой.")
-            return data
+            # пробуем декодировать JSON
+            return json.loads(content)
 
     except FileNotFoundError:
         print(f"Ошибка: файл '{filepath}' не найден.")

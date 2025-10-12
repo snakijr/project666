@@ -35,3 +35,7 @@ def test_load_json_empty_file(tmp_path):
 
     with pytest.raises(ValueError, match="Файл пустой."):
         load_json(str(file_path))
+
+
+def test_load_json_whitespace_only(tmp_path):
+    """Проверка обработки файла, содержащего только пробелы и переносы строк."""

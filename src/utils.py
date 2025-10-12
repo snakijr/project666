@@ -1,25 +1,30 @@
 import json
-import os
 
-
-def load_transactions(file_path: str) -> list[dict]:
+def load_json(filepath):
     """
-    Загружает данные о финансовых транзакциях из JSON-файла.
+    Загружает данные из JSON-файла.
 
-    :param file_path: Путь до JSON-файла (например: "data/operations.json")
-    :return: Список словарей с транзакциями.
-             Если файл не найден, пустой или содержит не список — возвращает [].
-             Также исключает пустые объекты {} из результата.
+    Args:
+        filepath (str): Путь к JSON-файлу.
+
+    Returns:
+        dict | list: Содержимое JSON-файла.
+
+    Raises:
+        FileNotFoundError: Если файл не найден.
+        json.JSONDecodeError: Если файл не удалось декодировать.
+        ValueError: Если файл пустой.
     """
-    if not os.path.exists(file_path):
-        return []
-
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            # Проверяем, что это список и фильтруем пустые записи
-            if isinstance(data, list):
-                return [item for item in data if isinstance(item, dict) and item]
-            return []
-    except (json.JSONDecodeError, OSError):
-        return []
+        with open(filepath, "r", encoding="utf-8") as file:
+            data = json.load(file)
+            if not data:
+                raise ValueError("Файл пустой.")
+            return data
+
+    except FileNotFoundError:
+        print(f"Ошибка: файл '{filepath}' не найден.")
+        raise
+    except json.JSONDecodeError as e:
+        print(f"Ошибка: не удалось декодировать JSON ({e})")
+        raise
